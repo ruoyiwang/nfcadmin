@@ -2,6 +2,7 @@ package badminton.sr.nfcadmin;
 
 import android.content.Intent;
 import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -91,22 +92,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void onNfcIntent(Intent intent) {
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        String[] techList = tag.getTechList();
 
-//        View rootView = binding.getRoot().getRootView();
         TextView first_text_view = findViewById(R.id.textview_first);
-
-        first_text_view.setText("SCANNED");
+//        first_text_view.setText("SCANNED");
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            String[] techList = tag.getTechList();
+
             Parcelable[] rawMessages =
                     intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (rawMessages != null) {
                 NdefMessage[] messages = new NdefMessage[rawMessages.length];
                 for (int i = 0; i < rawMessages.length; i++) {
                     messages[i] = (NdefMessage) rawMessages[i];
+                    NdefRecord[] records = messages[i].getRecords();
                 }
-                // Process the messages array.
+
+                first_text_view.setText(new String(messages[0].getRecords()[0].getPayload()) + " | " + messages[0].getRecords().length);
+
             }
         }
     }
