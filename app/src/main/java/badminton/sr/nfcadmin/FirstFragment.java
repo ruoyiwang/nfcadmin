@@ -15,6 +15,14 @@ public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
 
+    public static FirstFragment newInstance(int index) {
+        FirstFragment fragment = new FirstFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("section_number", index);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
